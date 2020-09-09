@@ -5,7 +5,7 @@ public class ResourcesMiddleGroupVo {
 	private String middle_group_no;
 	private String middle_group_category;
 	private String middle_group_info;
-	private String major_group_no;
+	private String secondary_code;
 
 	public String getMiddle_group_no() {
 		return middle_group_no;
@@ -31,12 +31,12 @@ public class ResourcesMiddleGroupVo {
 		this.middle_group_info = middle_group_info;
 	}
 
-	public String getMajor_group_no() {
-		return major_group_no;
+	public String getSecondary_code() {
+		return secondary_code;
 	}
 
-	public void setMajor_group_no(String major_group_no) {
-		this.major_group_no = major_group_no;
+	public void setSecondary_code(String secondary_code) {
+		this.secondary_code = secondary_code;
 	}
 
 }

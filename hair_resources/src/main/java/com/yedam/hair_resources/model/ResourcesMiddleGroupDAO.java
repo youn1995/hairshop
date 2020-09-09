@@ -25,7 +25,7 @@ public class ResourcesMiddleGroupDAO {
 		ResultSet rs = null;
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "SELECT MIDDLE_GROUP_NO, MIDDLE_GROUP_CATEGORY, MIDDLE_GROUP_INFO, MAJOR_GROUP_NO FROM RESOURCES_MIDDLE_GROUP WHERE MIDDLE_GROUP_NO = ?"; 
+			String sql = "SELECT MIDDLE_GROUP_NO, MIDDLE_GROUP_CATEGORY, MIDDLE_GROUP_INFO, secondary_code FROM RESOURCES_MIDDLE_GROUP WHERE MIDDLE_GROUP_NO = ?"; 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, resVo.getMiddle_group_no());
 			rs = pstmt.executeQuery();
@@ -34,7 +34,7 @@ public class ResourcesMiddleGroupDAO {
 				resultVo.setMiddle_group_no(rs.getString(1));
 				resultVo.setMiddle_group_category(rs.getString(2));
 				resultVo.setMiddle_group_info(rs.getString(3));
-				resultVo.setMajor_group_no(rs.getString(4));
+				resultVo.setSecondary_code(rs.getString(4));
 			} else {
 				System.out.println("No data");
 			}
@@ -53,7 +53,7 @@ public class ResourcesMiddleGroupDAO {
 		ResultSet rs = null;
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "SELECT MIDDLE_GROUP_NO, MIDDLE_GROUP_CATEGORY, MIDDLE_GROUP_INFO, MAJOR_GROUP_NO FROM RESOURCES_MIDDLE_GROUP";
+			String sql = "SELECT MIDDLE_GROUP_NO, MIDDLE_GROUP_CATEGORY, MIDDLE_GROUP_INFO, secondary_code FROM RESOURCES_MIDDLE_GROUP";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -61,7 +61,7 @@ public class ResourcesMiddleGroupDAO {
 				resultVo.setMiddle_group_no(rs.getString(1));
 				resultVo.setMiddle_group_category(rs.getString(2));
 				resultVo.setMiddle_group_info(rs.getString(3));
-				resultVo.setMajor_group_no(rs.getString(4));
+				resultVo.setSecondary_code(rs.getString(4));
 				list.add(resultVo);
 			}
 		} catch (Exception e) {
@@ -77,12 +77,12 @@ public class ResourcesMiddleGroupDAO {
 		int r = 0;
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "INSERT INTO RESOURCES_MIDDLE_GROUP(MIDDLE_GROUP_NO, MIDDLE_GROUP_CATEGORY, MIDDLE_GROUP_INFO, MAJOR_GROUP_NO) "
+			String sql = "INSERT INTO RESOURCES_MIDDLE_GROUP(MIDDLE_GROUP_NO, MIDDLE_GROUP_CATEGORY, MIDDLE_GROUP_INFO, secondary_code) "
 					+ "VALUES (seq, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, resVo.getMiddle_group_category());
 			pstmt.setString(2, resVo.getMiddle_group_info());
-			pstmt.setString(3, resVo.getMajor_group_no());
+			pstmt.setString(3, resVo.getSecondary_code());
 			r = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,12 +97,12 @@ public class ResourcesMiddleGroupDAO {
 		int r = 0;
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "UPDATE RESOURCES_MIDDLE_GROUP SET MIDDLE_GROUP_CATEGORY = ?, MIDDLE_GROUP_INFO = ?, MAJOR_GROUP_NO = ? "
+			String sql = "UPDATE RESOURCES_MIDDLE_GROUP SET MIDDLE_GROUP_CATEGORY = ?, MIDDLE_GROUP_INFO = ?, secondary_code = ? "
 					+ "WHERE RESOURCES_NO = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, resVo.getMiddle_group_category());
 			pstmt.setString(2, resVo.getMiddle_group_info());
-			pstmt.setString(3, resVo.getMajor_group_no());
+			pstmt.setString(3, resVo.getSecondary_code());
 			pstmt.setString(4, resVo.getMiddle_group_no());
 			r = pstmt.executeUpdate();
 		} catch (Exception e) {

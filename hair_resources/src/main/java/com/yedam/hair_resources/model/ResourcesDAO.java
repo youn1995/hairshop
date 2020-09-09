@@ -25,7 +25,7 @@ public class ResourcesDAO {
 		ResultSet rs = null;
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "SELECT RESOURCES_NO, RESOURCES_NAME, RESOURCES_IMAGE, RESOURCES_DIVISION, MIDDLE_GROUP_NO"
+			String sql = "SELECT RESOURCES_NO, RESOURCES_NAME, RESOURCES_IMAGE, RESOURCES_DIVISION, MIDDLE_GROUP_NO, RESOURCES_info"
 					+ " FROM RESOURCES WHERE RESOURCES_NO = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, resVo.getResources_no());
@@ -37,6 +37,7 @@ public class ResourcesDAO {
 				resultVo.setResources_image(rs.getString(3));
 				resultVo.setResources_division(rs.getString(4));
 				resultVo.setMiddle_group_no(rs.getString(5));
+				resultVo.setResources_info(rs.getString(6));
 			} else {
 				System.out.println("No data");
 			}
@@ -55,7 +56,7 @@ public class ResourcesDAO {
 		ResultSet rs = null;
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "SELECT RESOURCES_NO, RESOURCES_NAME, RESOURCES_IMAGE, RESOURCES_DIVISION, MIDDLE_GROUP_NO"
+			String sql = "SELECT RESOURCES_NO, RESOURCES_NAME, RESOURCES_IMAGE, RESOURCES_DIVISION, MIDDLE_GROUP_NO, RESOURCES_info"
 					+ " FROM RESOURCES";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -66,6 +67,7 @@ public class ResourcesDAO {
 				resultVo.setResources_image(rs.getString(3));
 				resultVo.setResources_division(rs.getString(4));
 				resultVo.setMiddle_group_no(rs.getString(5));
+				resultVo.setResources_info(rs.getString(6));
 				list.add(resultVo);
 			}
 		} catch (Exception e) {
@@ -81,13 +83,14 @@ public class ResourcesDAO {
 		int r = 0;
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "INSERT INTO RESOURCES(RESOURCES_NO, RESOURCES_NAME, RESOURCES_IMAGE, RESOURCES_DIVISION, MIDDLE_GROUP_NO) "
-					+ "VALUES (seq, ?, ?, ?, ?)";
+			String sql = "INSERT INTO RESOURCES(RESOURCES_NO, RESOURCES_NAME, RESOURCES_IMAGE, RESOURCES_DIVISION, MIDDLE_GROUP_NO, RESOURCES_info) "
+					+ "VALUES (seq, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, resVo.getResources_name());
 			pstmt.setString(2, resVo.getResources_image());
 			pstmt.setString(3, resVo.getResources_division());
 			pstmt.setString(4, resVo.getMiddle_group_no());
+			pstmt.setString(5, resVo.getResources_info());
 			r = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,7 +105,7 @@ public class ResourcesDAO {
 		int r = 0;
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "UPDATE RESOURCES SET RESOURCES_NAME = ?, RESOURCES_IMAGE = ?, RESOURCES_DIVISION = ? MIDDLE_GROUP_NO = ? "
+			String sql = "UPDATE RESOURCES SET RESOURCES_NAME = ?, RESOURCES_IMAGE = ?, RESOURCES_DIVISION = ?, MIDDLE_GROUP_NO = ?, RESOURCES_info = ?"
 					+ "WHERE RESOURCES_NO = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, resVo.getResources_name());
@@ -110,6 +113,7 @@ public class ResourcesDAO {
 			pstmt.setString(3, resVo.getResources_division());
 			pstmt.setString(4, resVo.getMiddle_group_no());
 			pstmt.setString(5, resVo.getResources_no());
+			pstmt.setString(6, resVo.getResources_info());
 			r = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
