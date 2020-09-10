@@ -16,6 +16,8 @@
 	$(document).ready(function() {
 		$('#codecategory').DataTable();
 		$('#code').DataTable();
+		
+		
 	});
 </script>
 </head>
@@ -28,6 +30,7 @@
 					<th>카테고리명</th>
 					<th>설명</th>
 					<th>대분류명</th>
+					<th>수정/삭제</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,6 +40,7 @@
 						<td>${i.middle_group_category }</td>
 						<td>${i.middle_group_info }</td>
 						<td>${i.secondary_code}</td>
+						<td><button>수정</button><button>삭제</button></td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -51,16 +55,18 @@
 					<th>대표코드명</th>
 					<th>서브코드</th>
 					<th>서브코드명</th>
+					<th>수정/삭제</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${codelist}" var="ci">
 				<tr>
 					<td>${ci.code_no}</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>${ci.primary_code}</td>
+					<td>${ci.code_name}</td>
+					<td>${ci.secondary_code}</td>
+					<td>${ci.code_info}</td>
+					<td><button>수정</button><button>삭제</button></td>
 				</tr>
 				</c:forEach>
 			</tbody>

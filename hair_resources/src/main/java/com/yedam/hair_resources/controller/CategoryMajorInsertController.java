@@ -27,9 +27,14 @@ public class CategoryMajorInsertController implements Controller {
 		cVo.setPrimary_code("0F");
 		cVo.setCode_name("자재대분류코드");
 		String secCode = CodeDAO.getInstance().selectMaxSecondaryCode(cVo).getSecondary_code();
-		int secCod = Integer.parseInt(secCode.substring(1))+1 ;
-		cVo.setSecondary_code("f"+new Integer(secCod).toString());
-		
+		int secCod = 0;
+		if (secCode == null) {
+			secCod = 1;
+		} else {
+			secCod = Integer.parseInt(secCode.substring(1)) + 1;
+		}
+		cVo.setSecondary_code("f" + new Integer(secCod).toString());
+
 		CodeDAO.getInstance().insert(cVo);
 		response.sendRedirect("/hair_resources/categoryList.do");
 	}
