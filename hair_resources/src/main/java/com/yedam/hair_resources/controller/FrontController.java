@@ -22,12 +22,11 @@ public class FrontController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException { //최초 메모리 로딩시점에 한번만 실행됨
 		charset = config.getInitParameter("charset");  //web.xml에서 파람 불러오기위해 하는작업 utf-8
 		list = new HashMap<String, Controller>();
-		list.put("/memberInsert.do", new    ()); // 요청이 들어오면 뭘실행해야하는지를 url과 sub controller를 매핑함
-		list.put("/memberUpdate.do", new MemberUpdateController());
-		list.put("/memberSearch.do", new MemberSearchController());
-		list.put("/admin/memberSearchPage.do", new MemberSearchPageController());
-		list.put("/memberDelete.do", new MemberDeleteController());
-		list.put("/memberList.do", new MemberListController());
+		list.put("/resourcesList.do", new ResourcesListController()); // 요청이 들어오면 뭘실행해야하는지를 url과 sub controller를 매핑함
+		list.put("/categoryList.do", new CategoryListController());
+		list.put("/categoryInsert.do", new CategoryInsertController());
+		list.put("/categoryMajorInsert.do", new CategoryMajorInsertController());
+
 	}
 
 	

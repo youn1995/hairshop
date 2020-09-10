@@ -101,4 +101,89 @@ public class CodeDAO {
 		}
 		return list;
 	}
+	
+	// 인서트
+		public int insert(CodeVo resVo) {
+			int r = 0;
+			try {
+				conn = ConnectionManager.getConnnect();
+				String sql = "INSERT INTO code(CODE_NO, PRIMARY_CODE, CODE_NAME, SECONDARY_CODE, CODE_INFO) "
+						+ "VALUES (code_no_seq.nextVal, ?, ?, ?, ?)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, resVo.getPrimary_code());
+				pstmt.setString(2, resVo.getCode_name());
+				pstmt.setString(3, resVo.getSecondary_code());
+				pstmt.setString(4, resVo.getCode_info());
+				r = pstmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				ConnectionManager.close(conn);
+			}
+			return r;
+		}
+
+		// 수정
+		public int update(ResourcesVo resVo) {
+			int r = 0;
+			try {
+				conn = ConnectionManager.getConnnect();
+				String sql = "UPDATE RESOURCES SET RESOURCES_NAME = ?, RESOURCES_IMAGE = ?, RESOURCES_DIVISION = ?, MIDDLE_GROUP_NO = ?, RESOURCES_info = ?"
+						+ "WHERE RESOURCES_NO = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, resVo.getResources_name());
+				pstmt.setString(2, resVo.getResources_image());
+				pstmt.setString(3, resVo.getResources_division());
+				pstmt.setString(4, resVo.getMiddle_group_no());
+				pstmt.setString(5, resVo.getResources_no());
+				pstmt.setString(6, resVo.getResources_info());
+				r = pstmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				ConnectionManager.close(conn);
+			}
+			return r;
+		}
+
+		// 딜리트
+		public int delete(ResourcesVo resVo) {
+			int r = 0;
+			try {
+				conn = ConnectionManager.getConnnect();
+				String sql = "DELETE FROM RESOURCES WHERE RESOURCES_NO = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, resVo.getResources_no());
+				r = pstmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				ConnectionManager.close(conn);
+			}
+			return r;
+		}
+		
+		public CodeVo selectMaxSecondaryCode(CodeVo cVo) {
+			CodeVo resultVo = null;
+			ResultSet rs = null;
+			try {
+				conn = ConnectionManager.getConnnect();
+				String sql = "SELECT max(SECONDARY_CODE) from code " + 
+						"where primary_code = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, cVo.getPrimary_code());
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					resultVo = new CodeVo();
+					resultVo.setSecondary_code(rs.getString(1));
+				} else {
+					System.out.println("No data");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				ConnectionManager.close(rs, pstmt, conn);
+			}
+			return resultVo;
+		}
 }

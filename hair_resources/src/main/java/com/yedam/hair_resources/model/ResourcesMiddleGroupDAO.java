@@ -53,7 +53,9 @@ public class ResourcesMiddleGroupDAO {
 		ResultSet rs = null;
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "SELECT MIDDLE_GROUP_NO, MIDDLE_GROUP_CATEGORY, MIDDLE_GROUP_INFO, secondary_code FROM RESOURCES_MIDDLE_GROUP";
+			String sql = "SELECT r.MIDDLE_GROUP_NO, r.MIDDLE_GROUP_CATEGORY, r.MIDDLE_GROUP_INFO, c.code_info"
+					+ " FROM RESOURCES_MIDDLE_GROUP r JOIN CODE c"
+					+ " ON(r.secondary_code = c.secondary_code)";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -78,7 +80,7 @@ public class ResourcesMiddleGroupDAO {
 		try {
 			conn = ConnectionManager.getConnnect();
 			String sql = "INSERT INTO RESOURCES_MIDDLE_GROUP(MIDDLE_GROUP_NO, MIDDLE_GROUP_CATEGORY, MIDDLE_GROUP_INFO, secondary_code) "
-					+ "VALUES (seq, ?, ?, ?)";
+					+ "VALUES (MIDDLE_GROUP_NO_seq.nextVal, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, resVo.getMiddle_group_category());
 			pstmt.setString(2, resVo.getMiddle_group_info());
