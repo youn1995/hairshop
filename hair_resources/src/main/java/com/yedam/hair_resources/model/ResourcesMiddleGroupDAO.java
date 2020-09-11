@@ -100,7 +100,7 @@ public class ResourcesMiddleGroupDAO {
 		try {
 			conn = ConnectionManager.getConnnect();
 			String sql = "UPDATE RESOURCES_MIDDLE_GROUP SET MIDDLE_GROUP_CATEGORY = ?, MIDDLE_GROUP_INFO = ?, secondary_code = ? "
-					+ "WHERE RESOURCES_NO = ?";
+					+ "WHERE Middle_group_no = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, resVo.getMiddle_group_category());
 			pstmt.setString(2, resVo.getMiddle_group_info());
@@ -120,7 +120,7 @@ public class ResourcesMiddleGroupDAO {
 		int r = 0;
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "DELETE FROM RESOURCES_MIDDLE_GROUP WHERE RESOURCES_NO = ?";
+			String sql = "DELETE FROM RESOURCES_MIDDLE_GROUP WHERE Middle_group_no = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, resVo.getMiddle_group_no());
 			r = pstmt.executeUpdate();

@@ -124,19 +124,15 @@ public class CodeDAO {
 		}
 
 		// 수정
-		public int update(ResourcesVo resVo) {
+		public int update(CodeVo resVo) {
 			int r = 0;
 			try {
 				conn = ConnectionManager.getConnnect();
-				String sql = "UPDATE RESOURCES SET RESOURCES_NAME = ?, RESOURCES_IMAGE = ?, RESOURCES_DIVISION = ?, MIDDLE_GROUP_NO = ?, RESOURCES_info = ?"
-						+ "WHERE RESOURCES_NO = ?";
+				String sql = "UPDATE code set code_info = ? "
+						+ "WHERE code_no = ?";
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, resVo.getResources_name());
-				pstmt.setString(2, resVo.getResources_image());
-				pstmt.setString(3, resVo.getResources_division());
-				pstmt.setString(4, resVo.getMiddle_group_no());
-				pstmt.setString(5, resVo.getResources_no());
-				pstmt.setString(6, resVo.getResources_info());
+				pstmt.setString(1, resVo.getCode_info());
+				pstmt.setString(2, resVo.getCode_no());
 				r = pstmt.executeUpdate();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -147,13 +143,13 @@ public class CodeDAO {
 		}
 
 		// 딜리트
-		public int delete(ResourcesVo resVo) {
+		public int delete(CodeVo resVo) {
 			int r = 0;
 			try {
 				conn = ConnectionManager.getConnnect();
-				String sql = "DELETE FROM RESOURCES WHERE RESOURCES_NO = ?";
+				String sql = "DELETE FROM CODE WHERE CODE_NO = ?";
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, resVo.getResources_no());
+				pstmt.setString(1, resVo.getCode_no());
 				r = pstmt.executeUpdate();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -168,14 +164,14 @@ public class CodeDAO {
 			ResultSet rs = null;
 			try {
 				conn = ConnectionManager.getConnnect();
-				String sql = "SELECT max(SECONDARY_CODE) from code " + 
-						"where primary_code = ?";
+				String sql = "select max(to_number(substr(SECONDARY_CODE, 2))) from code where primary_code = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, cVo.getPrimary_code());
 				rs = pstmt.executeQuery();
 				if (rs.next()) {
 					resultVo = new CodeVo();
 					resultVo.setSecondary_code(rs.getString(1));
+					System.out.println(rs.getString(1));
 				} else {
 					System.out.println("No data");
 				}

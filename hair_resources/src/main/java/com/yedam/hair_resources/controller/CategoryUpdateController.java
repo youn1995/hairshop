@@ -9,34 +9,27 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import com.yedam.hair_resources.model.CodeDAO;
-import com.yedam.hair_resources.model.CodeVo;
+import com.yedam.hair_resources.model.ResourcesMiddleGroupDAO;
+import com.yedam.hair_resources.model.ResourcesMiddleGroupVo;
 
-public class CategoryMajorInsertController implements Controller {
+public class CategoryUpdateController implements Controller {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		CodeVo cVo = new CodeVo();
+		ResourcesMiddleGroupVo rVo = new ResourcesMiddleGroupVo();
+		
 		try {
-			BeanUtils.copyProperties(cVo, request.getParameterMap());
+			BeanUtils.copyProperties(rVo, request.getParameterMap());
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
-		cVo.setPrimary_code("0F");
-		cVo.setCode_name("자재대분류코드");
-		String secCode = CodeDAO.getInstance().selectMaxSecondaryCode(cVo).getSecondary_code();
-		int secCod = 0;
-		if (secCode == null) {
-			secCod = 1;
-		} else {
-			secCod = Integer.parseInt(secCode) + 1;
-		}
-		cVo.setSecondary_code("f" + new Integer(secCod).toString());
-
-		CodeDAO.getInstance().insert(cVo);
+		System.out.println(rVo.getMiddle_group_no()+" : "+rVo.getSecondary_code()+" : "+rVo.getMiddle_group_info());
+		
+		int r = ResourcesMiddleGroupDAO.getInstance().update(rVo);
 		response.sendRedirect("/hair_resources/categoryList.do");
+
 	}
 
 }

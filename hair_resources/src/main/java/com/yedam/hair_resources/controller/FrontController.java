@@ -25,8 +25,11 @@ public class FrontController extends HttpServlet {
 		list.put("/resourcesList.do", new ResourcesListController()); // 요청이 들어오면 뭘실행해야하는지를 url과 sub controller를 매핑함
 		list.put("/categoryList.do", new CategoryListController());
 		list.put("/categoryInsert.do", new CategoryInsertController());
+		list.put("/categoryUpdate.do", new CategoryUpdateController());
+		list.put("/categoryDelete.do", new CategoryDeleteController());
 		list.put("/categoryMajorInsert.do", new CategoryMajorInsertController());
-
+		list.put("/categoryMajorDelete.do", new CategoryMajorDeleteController());
+		list.put("/categoryMajorUpdate.do", new CategoryMajorUpdateController());
 	}
 
 	
