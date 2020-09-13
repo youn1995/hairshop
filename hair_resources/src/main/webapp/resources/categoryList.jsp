@@ -8,11 +8,23 @@
 <title>categoryList</title>
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+	crossorigin="anonymous">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" charset="utf8"
 	src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+	integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+	integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+	crossorigin="anonymous"></script>
 <script>
 	var cnt1 = 0;
 	var beforeText1;
@@ -125,43 +137,65 @@
 								.click(
 										function() {
 											var $tr = $(this).parent().parent();
-											$.ajax({
+											$
+													.ajax({
 														url : "${pageContext.request.contextPath}/categoryDelete.do", // 클라이언트가 요청을 보낼 서버의 URL 주소
 
 														data : {
-															no : $(this).parent().parent().children().eq(0).text()
+															no : $(this)
+																	.parent()
+																	.parent()
+																	.children()
+																	.eq(0)
+																	.text()
 														}, // HTTP 요청과 함께 서버로 보낼 데이터
 														type : "GET", // HTTP 요청 방식(GET, POST)
 														success : function(data) {
 															if (data != 0) {
 																$tr.remove();
 															} else {
-																console.log("실패");
+																console
+																		.log("실패");
 															}
 														}
 													});
 										});
 
-						$(".btncateUpdate").click(
-								
-								function() {
-									var cate4 = $(this).parent().parent().children().eq(0).text();
-									var cate1 = $(this).parent().parent().children().eq(1).text();
-									var cate2 = $(this).parent().parent().children().eq(2).text();
-									var cate3 = $(this).parent().parent().children().eq(3).text();
-									$("#cate1").val(cate1);
-									$("#cate4").val(cate4);
-									$("#cate2").text(cate2);
-									$("#cate3 option").removeAttr("selected");
-									console.log($("#cate3").children().length);
-									for(var i=0; i<$("#cate3").children().length; i++){
-										if($("#cate3").children().eq(i).text()==cate3){
-										console.log(cate3);
-											$("#cate3 option").eq(i).attr("selected", "selected");
-										}
-									}
-									dialog.dialog("open");
-								});
+						$(".btncateUpdate")
+								.click(
+
+										function() {
+											var cate4 = $(this).parent()
+													.parent().children().eq(0)
+													.text();
+											var cate1 = $(this).parent()
+													.parent().children().eq(1)
+													.text();
+											var cate2 = $(this).parent()
+													.parent().children().eq(2)
+													.text();
+											var cate3 = $(this).parent()
+													.parent().children().eq(3)
+													.text();
+											$("#cate1").val(cate1);
+											$("#cate4").val(cate4);
+											$("#cate2").text(cate2);
+											$("#cate3 option").removeAttr(
+													"selected");
+											console
+													.log($("#cate3").children().length);
+											for (var i = 0; i < $("#cate3")
+													.children().length; i++) {
+												if ($("#cate3").children()
+														.eq(i).text() == cate3) {
+													console.log(cate3);
+													$("#cate3 option").eq(i)
+															.attr("selected",
+																	"selected");
+												}
+											}
+											dialog.dialog("open");
+										});
 
 						dialog = $("#dialog").dialog({
 							autoOpen : false,
@@ -169,11 +203,9 @@
 							width : 350,
 							modal : true
 						});
-						
-						
+
 						$("#updateCate").click(function() {
-									
-									
+
 						});
 					});
 </script>
@@ -197,8 +229,10 @@
 						<td>${i.middle_group_category }</td>
 						<td>${i.middle_group_info }</td>
 						<td>${i.secondary_code}</td>
-						<td><button class="btncateUpdate">수정</button>
-							<button class="btncateDelete">삭제</button></td>
+						<td>
+						<div class="btn-group" role="group" aria-label="Basic example">
+						<button type="button" class="btn btn-secondary btncateUpdate">수정</button>
+							<button type="button" class="btn btn-secondary btncateDelete">삭제</button></div></td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -272,9 +306,8 @@
 	<div id="dialog" title="Update">
 		<form action="${pageContext.request.contextPath}/categoryUpdate.do"
 			method="get">
-			<input type="hidden" id="cate4" name="middle_group_no">
-			<label>카테고리명</label> <input type="text" id="cate1"
-				name="middle_group_category" value="">
+			<input type="hidden" id="cate4" name="middle_group_no"> <label>카테고리명</label>
+			<input type="text" id="cate1" name="middle_group_category" value="">
 			<div>
 				<label>카테고리설명</label>
 				<textarea id="cate2" name="middle_group_info"></textarea>
