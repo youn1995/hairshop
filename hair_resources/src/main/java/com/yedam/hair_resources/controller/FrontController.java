@@ -30,6 +30,7 @@ public class FrontController extends HttpServlet {
 		list.put("/categoryMajorInsert.do", new CategoryMajorInsertController());
 		list.put("/categoryMajorDelete.do", new CategoryMajorDeleteController());
 		list.put("/categoryMajorUpdate.do", new CategoryMajorUpdateController());
+		list.put("/codeList.do", new CodeListController());
 	}
 
 	

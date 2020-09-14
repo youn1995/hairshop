@@ -74,7 +74,31 @@ public class CodeDAO {
 		}
 		return list;
 	}
-
+	
+	//프라이머리코드 조회
+	public ArrayList<CodeVo> primaryCodeDistinct(){
+		ArrayList<CodeVo> list = new ArrayList<CodeVo>();
+		CodeVo resultVo = null;
+		ResultSet rs = null;
+		try {
+			conn = ConnectionManager.getConnnect();
+			String sql = "SELECT distinct primary_code, code_name from code order by code_name";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				resultVo = new CodeVo();
+				resultVo.setPrimary_code(rs.getString(1));
+				resultVo.setCode_name(rs.getString(2));
+				list.add(resultVo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close(rs, pstmt, conn);
+		}
+		return list;
+	}
+	
 	// 전체조회
 	public ArrayList<CodeVo> selectAll() {
 		ArrayList<CodeVo> list = new ArrayList<CodeVo>();

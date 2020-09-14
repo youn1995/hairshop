@@ -230,9 +230,9 @@
 						<td>${i.middle_group_info }</td>
 						<td>${i.secondary_code}</td>
 						<td>
-						<div class="btn-group" role="group" aria-label="Basic example">
+						
 						<button type="button" class="btn btn-secondary btncateUpdate">수정</button>
-							<button type="button" class="btn btn-secondary btncateDelete">삭제</button></div></td>
+							<button type="button" class="btn btn-secondary btncateDelete">삭제</button></td>
 					</tr>
 				</c:forEach>
 			</tbody>
