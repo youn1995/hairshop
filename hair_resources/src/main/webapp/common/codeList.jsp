@@ -10,6 +10,14 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
 	crossorigin="anonymous">
+	<style>
+	 .toggleupdate{
+	 	display: none;
+	 }
+	 #updateslide {
+	 	display: none;
+	 }
+	</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>	
 <script type="text/javascript">
 	var btnPrimaryCodeCnt = 0;
@@ -115,6 +123,40 @@
 							});
 				});
 		
+		var cntForUpdateBtn = 0;
+		var whichUpdateBtn;
+		$(".btncodeUpdate").click(function(){
+			if(cntForUpdateBtn == 0){
+				whichUpdateBtn = $(this);
+				cntForUpdateBtn++;
+				var $slideDiv = $("<tr>").attr("id", "updateslide")
+								.append("<td><div class='toggleupdate'>1</div></td>")
+								.append("<td><div class='toggleupdate'><select><option></select></div></td>")
+								.append("<td><div class='toggleupdate'><input></div></td>")
+								.append("<td><div class='toggleupdate'><input></div></td>")
+								.append("<td><div class='toggleupdate'><input></div></td>")
+								.append("<td><div class='toggleupdate'></div></td>")
+								.css("background-color", "#FFE3AA");
+							
+				
+				$(this).closest("tr").after($slideDiv)
+				$("#updateslide").show("slow");
+				$(".toggleupdate").slideToggle("fast");
+			} else {
+				if($(this).closest("tr").children().eq(0).text() == whichUpdateBtn.closest("tr").children().eq(0).text()){
+					$(".toggleupdate").slideToggle("fast");
+					$("#updateslide").hide("slow");
+					setTimeout(function(){
+						$("#updateslide").remove();
+						cntForUpdateBtn = 0;
+						whichUpdateBtn = null;
+					}, 1000);
+				}
+			}
+			
+			
+			
+		});
 		
 	});
 </script>
@@ -132,8 +174,8 @@
 				<li class="nav-item active"><a class="nav-link" href="#">Home
 						<span class="sr-only">(current)</span>
 				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">코드관리</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">자재중분류관리</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/codeList.do">코드관리</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/categoryList.do">자재중분류관리</a></li>
 				<li class="nav-item"><a class="nav-link disabled" href="#"
 					tabindex="-1" aria-disabled="true">Disabled</a></li>
 			</ul>
@@ -161,7 +203,9 @@
 						<th scope="row">부코드 설명</th>
 						<th scope="row">수정/삭제</th>
 					</tr>
+					
 				</thead>
+				
 				<tbody id="codelisttable_tbody" class="table table-striped">
 					<c:forEach items="${alist}" var="a">
 						<tr>
