@@ -18,7 +18,36 @@ public class CodeDAO {
 		}
 		return instance;
 	}
-
+	// 프라이머리코드 서브코드로 한건조회
+	public CodeVo selectByPCSC(CodeVo cVo) {
+		CodeVo resultVo = null;
+		ResultSet rs = null;
+		try {
+			conn = ConnectionManager.getConnnect();
+			String sql = "SELECT code_no, primary_code, code_name, secondary_code, code_info from code where primary_code=? and secondary_code=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cVo.getPrimary_code());
+			pstmt.setString(2, cVo.getSecondary_code());
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				resultVo = new CodeVo();
+				resultVo.setCode_no(rs.getString(1));
+				resultVo.setPrimary_code(rs.getString(2));
+				resultVo.setCode_name(rs.getString(3));
+				resultVo.setSecondary_code(rs.getString(4));
+				resultVo.setCode_info(rs.getString(5));
+			} else {
+				System.out.println("No data");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close(rs, pstmt, conn);
+		}
+		
+		return resultVo;
+	}
+	
 	// 한건조회
 	public CodeVo selectOne(CodeVo resVo) {
 		CodeVo resultVo = null;

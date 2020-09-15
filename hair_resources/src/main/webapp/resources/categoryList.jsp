@@ -203,7 +203,7 @@
 							width : 350,
 							modal : true
 						});
-
+	
 						$("#updateCate").click(function() {
 
 						});
