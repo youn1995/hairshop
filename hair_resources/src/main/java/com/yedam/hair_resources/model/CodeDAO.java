@@ -194,6 +194,26 @@ public class CodeDAO {
 			}
 			return r;
 		}
+		public int updateAllCol(CodeVo cVo) {
+			int r = 0;
+			try {
+				conn = ConnectionManager.getConnnect();
+				String sql = "UPDATE code set primary_code=?, code_name=?, secondary_code=?, code_info = ? "
+						+ "WHERE code_no = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, cVo.getPrimary_code());
+				pstmt.setString(2, cVo.getCode_name());
+				pstmt.setString(3, cVo.getSecondary_code());
+				pstmt.setString(4, cVo.getCode_info());
+				pstmt.setString(5, cVo.getCode_no());
+				r = pstmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				ConnectionManager.close(conn);
+			}
+			return r;
+		}
 
 		// 딜리트
 		public int delete(CodeVo resVo) {

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.yedam.hair_resources.model.CodeDAO;
 import com.yedam.hair_resources.model.CodeVo;
 
+import net.sf.json.JSONArray;
+
 public class CodeListController implements Controller {
 
 	@Override
@@ -27,7 +29,8 @@ public class CodeListController implements Controller {
 		
 		if(request.getAttribute("plist") == null) {
 			ArrayList<CodeVo> plist = CodeDAO.getInstance().primaryCodeDistinct();
-			request.setAttribute("plist", plist);			
+			request.setAttribute("plist", plist);
+			request.setAttribute("pplist", JSONArray.fromObject(plist));
 		}
 		
 		request.getRequestDispatcher("/common/codeList.jsp").forward(request, response);

@@ -1,4 +1,0 @@
-	$(".btncateUpdate").click(function() {
-		
-	
-	};

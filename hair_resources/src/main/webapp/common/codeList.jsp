@@ -48,27 +48,29 @@
 						success : function(data) {
 							$("#btnPrimaryCodeAlret").html("");
 							if(data.code_no != null && data.code_no != ""){
+								$("#primary_codeInsert").val("");
 								var trCode = $("<tr>")
 								trCode.append($("<td>").text(data.code_no));
 								trCode.append($("<td>").text(data.primary_code));
 								trCode.append($("<td>").text(data.code_name));
 								trCode.append($("<td>").text(data.secondary_code));
 								trCode.append($("<td>").text(data.code_info));
-								trCode.append($("<td>").html('<div class="btn-group btn-group-sm" role="group" aria-label="Basic example"><button type="button" class="btn btn-secondary btncodeUpdate">수정</button><button type="button" class="btn btn-secondary btncodeDelete">삭제</button></div>'));
+								trCode.append($("<td>").html('<div class="btn-group btn-group-sm" role="group" aria-label="Basic example"><button type="button" class="btn btn-secondary btncodeUpdate">수정</button><button type="button" class="btn btn-danger btncodeDelete">삭제</button></div>'));
 								$("#codelisttable_tbody").prepend(trCode);
 								
 								$("#btnPrimaryCodeAlret").html('<div id="PrimaryCodeAlretContent" class="alert alert-success" role="alert"> 주 코드 생성완료 </div>');
 								$("#divForSubcode").remove();
 								setTimeout(function(){
 									$("#btnPrimaryCodeAlret").html("");
-								}, 5000);
+								}, 3000);
 							} else{
 								$("#btnPrimaryCodeAlret").html('<div id="PrimaryCodeAlretContent" class="alert alert-danger" role="alert"> 주 코드 생성실패 </div>');
 								$("#divForSubcode").remove();
 								setTimeout(function(){
 									$("#btnPrimaryCodeAlret").html("");
-								}, 5000);
+								}, 3000);
 							}
+							btnPrimaryCodeCnt = 0;
 						}
 					});			
 				} else {
@@ -95,7 +97,7 @@
 						trCode.append($("<td>").text(data.code_name));
 						trCode.append($("<td>").text(data.secondary_code));
 						trCode.append($("<td>").text(data.code_info));
-						trCode.append($("<td>").html('<div class="btn-group btn-group-sm" role="group" aria-label="Basic example"><button type="button" class="btn btn-secondary btncodeUpdate">수정</button><button type="button" class="btn btn-secondary btncodeDelete">삭제</button></div>'));
+						trCode.append($("<td>").html('<div class="btn-group btn-group-sm" role="group" aria-label="Basic example"><button type="button" class="btn btn-secondary btncodeUpdate">수정</button><button type="button" class="btn btn-danger btncodeDelete">삭제</button></div>'));
 						$("#codelisttable_tbody").prepend(trCode);
 						setTimeout(function(){
 							$("#secondary_codefrmAlert").html("");
@@ -107,8 +109,7 @@
 			}//end of if	
 		}); //end of on
 		
-		
-		$(".btncodeDelete").click(function() {
+		$("#codelisttable_tbody").on("click", ".btncodeDelete", function(){
 			var $tr = $(this).closest("tr");
 				$.ajax({url : "${pageContext.request.contextPath}/categoryMajorDelete.do", // 클라이언트가 요청을 보낼 서버의 URL 주소
 						data : {no : $(this).closest("tr").children().eq(0).text()},
@@ -125,22 +126,38 @@
 		
 		var cntForUpdateBtn = 0;
 		var whichUpdateBtn;
-		$(".btncodeUpdate").click(function(){
+		$("#codelisttable_tbody").on("click", ".btncodeUpdate", function(){
 			if(cntForUpdateBtn == 0){
 				whichUpdateBtn = $(this);
+				whichUpdateBtn.next().attr('disabled', true);
 				cntForUpdateBtn++;
+				var pplist = JSON.parse('${pplist}');
+				var $slideSelect = $("<select>");
+				 $slideSelect.attr("id", "toggleupdateSelect");
+				for(i=0; i< pplist.length; i++){
+					if(pplist[i].primary_code == whichUpdateBtn.closest("tr").children().eq(1).text()){
+						$slideSelect.append($("<option>").val(pplist[i].primary_code).text(pplist[i].primary_code).attr("selected","selected").data("code_name", pplist[i].code_name));
+					} else{
+						$slideSelect.append($("<option>").val(pplist[i].primary_code).text(pplist[i].primary_code).data("code_name", pplist[i].code_name));
+					}
+				}
+				
 				var $slideDiv = $("<tr>").attr("id", "updateslide")
-								.append("<td><div class='toggleupdate'>1</div></td>")
-								.append("<td><div class='toggleupdate'><select><option></select></div></td>")
-								.append("<td><div class='toggleupdate'><input></div></td>")
-								.append("<td><div class='toggleupdate'><input></div></td>")
-								.append("<td><div class='toggleupdate'><input></div></td>")
-								.append("<td><div class='toggleupdate'></div></td>")
+								.append("<td><div class='toggleupdate'>"+whichUpdateBtn.closest("tr").children().eq(0).text()+"</div></td>")
+								.append($("<td>").append($("<div>").attr("class","toggleupdate").append($slideSelect)))
+								.append("<td><div class='toggleupdate' id='toggleupdateDivCodeName'>"+whichUpdateBtn.closest("tr").children().eq(2).text()+"</div></td>")
+								.append("<td><div class='toggleupdate'>"+whichUpdateBtn.closest("tr").children().eq(3).text()+"</div></td>")
+								.append("<td><div class='toggleupdate'><input id='toggleupdateCode_info'></div></td>")
+									.append("<td><div class='toggleupdate'><button type='button' id='btnUpdateFin' class='btn btn-sm btn-warning'>&nbsp&nbsp&nbsp 수정 &nbsp&nbsp&nbsp</button></div></td>")
+			
+								
 								.css("background-color", "#FFE3AA");
 							
-				
 				$(this).closest("tr").after($slideDiv)
+				
 				$("#updateslide").show("slow");
+				whichUpdateBtn.text("취소");
+				
 				$(".toggleupdate").slideToggle("fast");
 			} else {
 				if($(this).closest("tr").children().eq(0).text() == whichUpdateBtn.closest("tr").children().eq(0).text()){
@@ -149,6 +166,8 @@
 					setTimeout(function(){
 						$("#updateslide").remove();
 						cntForUpdateBtn = 0;
+						whichUpdateBtn.text("수정");
+						whichUpdateBtn.next().attr('disabled', false);
 						whichUpdateBtn = null;
 					}, 1000);
 				}
@@ -156,6 +175,57 @@
 			
 			
 			
+		});
+		
+		$("#codelisttable_tbody").on("change", "#toggleupdateSelect", function(){
+			$("#toggleupdateDivCodeName").text($("#toggleupdateSelect option:selected").data("code_name"));
+			
+		});
+		$("#codelisttable_tbody").on("click", "#btnUpdateFin", function(){
+			var $finTr = $(this).closest("tr").children();
+			if($("#toggleupdateCode_info").val() != null && $("#toggleupdateCode_info").val() != ""){
+			var finUpdate1 = $finTr.eq(0).find("div").text();
+			var finUpdate2 = $("#toggleupdateSelect option:selected").val();
+			var finUpdate3 = $("#toggleupdateSelect option:selected").data("code_name");
+			var finUpdate4 = $finTr.eq(3).find("div").text();
+			var finUpdate5 = $("#toggleupdateCode_info").val();
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/codeUpdate.do",
+				data : {code_no:finUpdate1, primary_code:finUpdate2, code_name:finUpdate3, secondary_code:finUpdate4, code_info:finUpdate5},
+				type : "post",
+				dataType : "json",
+				success : function(data){
+					
+						console.log(data)
+					if(data.code_no != null && data.code_no != ""){
+						$("#btnUpdateFin").closest("tr").prev().children().eq(1).text(data.primary_code);
+						$("#btnUpdateFin").closest("tr").prev().children().eq(2).text(data.code_name);
+						$("#btnUpdateFin").closest("tr").prev().children().eq(3).text(data.secondary_code);
+						$("#btnUpdateFin").closest("tr").prev().children().eq(4).text(data.code_info);
+						$(".toggleupdate").slideToggle("fast");
+						$("#updateslide").hide("slow");
+						setTimeout(function(){
+							$("#updateslide").remove();
+							cntForUpdateBtn = 0;
+							whichUpdateBtn.text("수정");
+							whichUpdateBtn.next().attr('disabled', false);
+							whichUpdateBtn = null;
+						}, 1000);
+					} else {
+						$(".toggleupdate").slideToggle("fast");
+						$("#updateslide").hide("slow");
+						setTimeout(function(){
+							$("#updateslide").remove();
+							cntForUpdateBtn = 0;
+							whichUpdateBtn.text("수정");
+							whichUpdateBtn.next().attr('disabled', false);
+							whichUpdateBtn = null;
+						}, 1000);
+					}
+				}
+			});
+			}
 		});
 		
 	});
@@ -217,7 +287,7 @@
 							<td><div class="btn-group btn-group-sm" role="group"
 									aria-label="Basic example">
 									<button type="button" class="btn btn-secondary btncodeUpdate">수정</button>
-									<button type="button" class="btn btn-secondary btncodeDelete">삭제</button>
+									<button type="button" class="btn btn-danger btncodeDelete">삭제</button>
 								</div></td>
 						</tr>
 					</c:forEach>

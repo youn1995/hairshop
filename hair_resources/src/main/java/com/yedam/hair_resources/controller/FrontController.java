@@ -33,12 +33,14 @@ public class FrontController extends HttpServlet {
 		list.put("/codeList.do", new CodeListController());
 		list.put("/primaryCodeInsert.do", new PrimaryCodeInsertController());
 		list.put("/secondaryCodeInsert.do", new SecondaryCodeInsertController());
+		list.put("/codeUpdate.do", new CodeUpdateController());
 	}
 
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding(charset); //web.xml에 있는거 읽어서 인코딩해라는 뜻
+		response.setContentType("text/html; charset=UTF-8");
 		String uri = request.getRequestURI(); //  /frontWeb/memberInsert.do
 		String contextPath = request.getContextPath(); //frontWeb subString으로 뒤에것만 가져옴
 		String path = uri.substring(contextPath.length()); // /memberInsert.do

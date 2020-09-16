@@ -2,6 +2,6 @@
 <Context>
 	<Resource name="jdbc/oracle" auth="Container"
 		type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
-		url="jdbc:oracle:thin:@127.0.0.1:1521:orcl" username="jsp" password="jsp"
+		url="jdbc:oracle:thin:@127.0.0.1:1521:xe" username="jsp" password="jsp"
 		maxTotal="20" maxIdle="10" maxWaitMillis="-1" /> <!-- -1 무한대기 -->
 </Context>
