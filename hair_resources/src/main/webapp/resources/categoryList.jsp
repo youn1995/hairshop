@@ -37,112 +37,17 @@
 						$('#codecategory').DataTable();
 						$('#code').DataTable();
 
-						$(".btncodeUpdate")
-								.click(
-										function() {
-											var afterText;
-											var $tr = $(this).parent().parent()
-													.children().eq(4);
-											if (cnt1 == 0) {
-												cnt1++;
-												beforeText1 = $tr.text();
-												$tr.empty();
-												$tr
-														.html('<input type="text" id="codeUp">');
-												$tr.children().val(beforeText1);
-											} else {
-												if ($(this).parent().parent()
-														.children().eq(4)
-														.children().attr("id") == "codeUp") {
-													afterText = $("#codeUp")
-															.val();
-
-													$
-															.ajax({
-
-																url : "${pageContext.request.contextPath}/categoryMajorUpdate.do", // 클라이언트가 요청을 보낼 서버의 URL 주소
-
-																data : {
-																	no : $(this)
-																			.parent()
-																			.parent()
-																			.children()
-																			.eq(
-																					0)
-																			.text(),
-																	text : afterText
-																}, // HTTP 요청과 함께 서버로 보낼 데이터
-
-																type : "GET", // HTTP 요청 방식(GET, POST)
-
-																success : function(
-																		data) {
-																	var codeUpParent = $(
-																			"#codeUp")
-																			.parent();
-																	codeUpParent
-																			.empty();
-																	if (data != 0) {
-
-																		codeUpParent
-																				.text(afterText);
-																	} else {
-																		console
-																				.log("실패");
-																		codeUpParent
-																				.text(beforeText1);
-																		beforeText1 = null;
-																	}
-																}
-															});
-
-													cnt1 = 0;
-												}
-											}
-
-										});
-
-						$(".btncodeDelete")
-								.click(
-										function() {
-											var $tr = $(this).parent().parent();
-											$
-													.ajax({
-
-														url : "${pageContext.request.contextPath}/categoryMajorDelete.do", // 클라이언트가 요청을 보낼 서버의 URL 주소
-
-														data : {
-															no : $(this)
-																	.parent()
-																	.parent()
-																	.children()
-																	.eq(0)
-																	.text()
-														}, // HTTP 요청과 함께 서버로 보낼 데이터
-
-														type : "GET", // HTTP 요청 방식(GET, POST)
-
-														success : function(data) {
-															if (data != 0) {
-																$tr.remove();
-															} else {
-																console
-																		.log("실패");
-															}
-														}
-													});
-										});
-
 						$(".btncateDelete")
 								.click(
 										function() {
-											var $tr = $(this).parent().parent();
+											var $tr = $(this).parent().parent().parent();
 											$
 													.ajax({
 														url : "${pageContext.request.contextPath}/categoryDelete.do", // 클라이언트가 요청을 보낼 서버의 URL 주소
 
 														data : {
 															no : $(this)
+																	.parent()
 																	.parent()
 																	.parent()
 																	.children()
@@ -165,16 +70,16 @@
 								.click(
 
 										function() {
-											var cate4 = $(this).parent()
+											var cate4 = $(this).parent().parent()
 													.parent().children().eq(0)
 													.text();
-											var cate1 = $(this).parent()
+											var cate1 = $(this).parent().parent()
 													.parent().children().eq(1)
 													.text();
-											var cate2 = $(this).parent()
+											var cate2 = $(this).parent().parent()
 													.parent().children().eq(2)
 													.text();
-											var cate3 = $(this).parent()
+											var cate3 = $(this).parent().parent()
 													.parent().children().eq(3)
 													.text();
 											$("#cate1").val(cate1);
@@ -201,9 +106,13 @@
 							autoOpen : false,
 							height : 400,
 							width : 350,
-							modal : true
+							modal : true,
+							draggable: false,
+							dialogClass: "dialogcla",
 						});
-	
+						$(".dialogcla .ui-dialog-titlebar").css("display", "none");
+						$(".ui-dialog,.ui-dialog,.ui-widget, .ui-widget-content, .dialogcla, .ui-draggable, .ui-resizable").css("background-color", "white");
+						$(".ui-corner-all").css("background-color", "black");
 						$("#updateCate").click(function() {
 
 						});
@@ -220,17 +129,31 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link" href="#">Home
+				<li class="nav-item active">
+				<c:if test="${id == null}">
+				<a class="nav-link" href="${pageContext.request.contextPath}/login.do">로그인
 						<span class="sr-only">(current)</span>
-				</a></li>
+				</a>
+				</c:if>
+				<c:if test="${id != null}">
+				<a class="nav-link" href="${pageContext.request.contextPath}/logout.do">로그아웃
+						<span class="sr-only">(current)</span>
+				</a>
+				</c:if>
+				</li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/codeList.do">코드관리</a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/categoryList.do">자재중분류관리</a></li>
 				<li class="nav-item"><a class="nav-link disabled" href="#"
-					tabindex="-1" aria-disabled="true">Disabled</a></li>
+					tabindex="-1" aria-disabled="true">${id}</a></li>
 			</ul>
 		</div>
 	</nav>
 	<div class="container">
+		<br>
+		<h3 class="font-weight-bold">미용자재분류리스트</h3>
+		<hr>
+		<div class="row-100">
+		
 		<table id="codecategory" class="display">
 			<thead>
 				<tr>
@@ -249,97 +172,76 @@
 						<td>${i.middle_group_info }</td>
 						<td>${i.secondary_code}</td>
 						<td>
-						
+						<div class="btn-group btn-group-sm" role="group">
 						<button type="button" class="btn btn-secondary btncateUpdate">수정</button>
-							<button type="button" class="btn btn-secondary btncateDelete">삭제</button></td>
+							<button type="button" class="btn btn-danger btncateDelete">삭제</button>
+							</div>
+							</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
-	<div>
-		<table id="code" class="display">
-			<thead>
-				<tr>
-					<th>코드번호</th>
-					<th>대표코드</th>
-					<th>대표코드명</th>
-					<th>서브코드</th>
-					<th>서브코드명</th>
-					<th>수정/삭제</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${codelist}" var="ci">
-					<tr>
-						<td>${ci.code_no}</td>
-						<td>${ci.primary_code}</td>
-						<td>${ci.code_name}</td>
-						<td>${ci.secondary_code}</td>
-						<td>${ci.code_info}</td>
-						<td><button class="btncodeUpdate">수정</button>
-							<button class="btncodeDelete">삭제</button></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-
-		</table>
-	</div>
-	<div>
-		<h3>중분류 넣기</h3>
+	<hr>
+	<div class="row">
+			<div class="col-sm">
+		<h4>미용자재분류 추가</h4>
+		<hr>
 		<form action="${pageContext.request.contextPath}/categoryInsert.do"
 			method="get">
-			<div>
-				<label>카테고리명</label> <input type="text" name="middle_group_category">
+			<div class="form-group">
+				<label>카테고리명</label> <input class="form-control" type="text" name="middle_group_category" required>
 			</div>
-			<div>
-				<label>카테고리설명</label>
-				<textarea name="middle_group_info"></textarea>
+			<div class="form-group">
+				<label>카테고리 설명</label>
+				<textarea class="form-control" name="middle_group_info"></textarea>
 			</div>
-			<div>
-				<label>대분류선택</label> <select name="secondary_code">
+			<div class="form-group">
+				<label>대분류 선택</label> <select class="form-control" name="secondary_code">
 					<c:forEach items="${clist}" var="cli">
 						<option value="${cli.secondary_code}">${cli.code_info}</option>
 					</c:forEach>
 				</select>
 			</div>
-			<div>
-				<button>등록</button>
+			<div class="btn-group" role="group">
+				<button class="btn btn-secondary" type="submit">등록</button>
+				<button class="btn btn-secondary" type="reset">취소</button>
 			</div>
 		</form>
-	</div>
-	<div>
-		<h3>대분류 넣기</h3>
-		<form
-			action="${pageContext.request.contextPath}/categoryMajorInsert.do"
-			method="get">
-			<div>
-				<label>대분류명</label> <input type="text" name="code_info">
-			</div>
-			<div>
-				<button>등록</button>
-			</div>
-		</form>
+		</div>
+		<div class="col-sm">
+		</div>
 	</div>
 
-	<div id="dialog" title="Update">
+
+	<div id="dialog" title="카테고리 수정" style="border: 1px solid black">
+		<div class="container" >
 		<form action="${pageContext.request.contextPath}/categoryUpdate.do"
 			method="get">
-			<input type="hidden" id="cate4" name="middle_group_no"> <label>카테고리명</label>
-			<input type="text" id="cate1" name="middle_group_category" value="">
-			<div>
-				<label>카테고리설명</label>
-				<textarea id="cate2" name="middle_group_info"></textarea>
+			
+			<input type="hidden" id="cate4" name="middle_group_no">
+			<div class="form-group">
+			<label>카테고리명</label>
+			<input class="form-control" type="text" id="cate1" name="middle_group_category" value="" required>
 			</div>
-			<div>
-				<label>대분류선택</label> <select id="cate3" name="secondary_code">
+			<div class="form-group">
+				<label>카테고리설명</label>
+				<textarea class="form-control" id="cate2" name="middle_group_info"></textarea>
+			</div>
+			<div class="form-group">
+				<label>대분류선택</label> <select class="form-control" id="cate3" name="secondary_code">
 					<c:forEach items="${clist}" var="cli">
 						<option value="${cli.secondary_code}">${cli.code_info}</option>
 					</c:forEach>
 				</select>
 			</div>
-			<button id="updateCate">수정</button>
+			<div class="btn-group" role="group">
+			<button class="btn btn-secondary" id="updateCate">수정</button>
+			<button class="btn btn-secondary">취소</button>
+			</div>
 		</form>
+		</div>
+	</div>
 	</div>
 </body>
 </html>

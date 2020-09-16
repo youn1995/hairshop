@@ -241,19 +241,29 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link" href="#">Home
+				<li class="nav-item active">
+				<c:if test="${id == null}">
+				<a class="nav-link" href="${pageContext.request.contextPath}/login.do">로그인
 						<span class="sr-only">(current)</span>
-				</a></li>
+				</a>
+				</c:if>
+				<c:if test="${id != null}">
+				<a class="nav-link" href="${pageContext.request.contextPath}/logout.do">로그아웃
+						<span class="sr-only">(current)</span>
+				</a>
+				</c:if>
+				</li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/codeList.do">코드관리</a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/categoryList.do">자재중분류관리</a></li>
 				<li class="nav-item"><a class="nav-link disabled" href="#"
-					tabindex="-1" aria-disabled="true">Disabled</a></li>
+					tabindex="-1" aria-disabled="true">${id}</a></li>
 			</ul>
 		</div>
 	</nav>
 	<div class="container">
 	<br>
 		<h3 class="font-weight-bold">코드리스트</h3>
+		<hr>
 		<form id="ischoosefrm" action="${pageContext.request.contextPath}/codeList.do">
 			<select id="isChoose" name="isChoose" class="custom-select">
 				<option value="all">전체선택</option>
