@@ -214,7 +214,7 @@
 	</div>
 
 
-	<div id="dialog" title="카테고리 수정" style="border: 1px solid black">
+	<div id="dialog" title="카테고리 수정" style="border: 1px solid black" hidden="hidden">
 		<div class="container" >
 		<form action="${pageContext.request.contextPath}/categoryUpdate.do"
 			method="get">
